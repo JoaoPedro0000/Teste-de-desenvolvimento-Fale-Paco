@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  web:
+    container_name: falepaco2
+    image: php:8-local
+    build: 
+      context: .
+    depends_on:
+      - db2
+    networks:
+      - backend2
+    volumes:
+      - ./:/var/www/html #trocar aqui
+    ports:
+      - 81:80
+  db2:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    #restart: always
+    environment:
+      MYSQL_DATABASE: falepaco2 # definir aqui
+      MYSQL_USER: uPaco # definir aqui
+      MYSQL_PASSWORD: sPaco # definir aqui
+      MYSQL_ROOT_PASSWORD: example # definir aqui
+    ports:
+      - "3307:3306"
+    networks: 
+      - backend2
+    volumes:
+      - banco2:/var/lib/mysql
+
+networks:
+  backend2:
+    driver: bridge
+
+volumes:
+  banco2:
